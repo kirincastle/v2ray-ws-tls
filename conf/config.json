@@ -1,31 +1,86 @@
 {
-	"log": {
-		"access": "/var/log/v2ray/access.log",
-		"error": "/var/log/v2ray/error.log",
-		"loglevel": "debug"
-	},
-	"inbound": {
-		"port": 30003,
-		"listen":"127.0.0.1",
-		"protocol": "vmess",
-		"settings": {
-			"clients": [
-				{
-					"id": "CLIENT_ID",
-					"alterId": CLIENT_ALTERID,
-					"security": "CLIENT_SECURITY"
-				}
-			]
-		},
-		"streamSettings":{
-			"network":"ws",
-			"wsSettings": {
-			"path": "/ray"
-			}
-		}
-	},
-	"outbound": {
-		"protocol": "freedom",
-		"settings": {}
-	}
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.0.2.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "198.51.100.0/24",
+          "203.0.113.0/24",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ]
+      }
+    ]
+  },
+  "log": {
+    "loglevel": "warning",
+    "error": "/var/log/v2ray/error.log",
+    "access": "/var/log/v2ray/access.log"
+  },
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "blocked"
+    }
+  ],
+  "inbounds": [
+    {
+      "streamSettings": {
+        "network": "ws",
+        "httpSettings": {},
+        "kcpSettings": {},
+        "tlsSettings": {},
+        "tcpSettings": {},
+        "security": "none",
+        "quicSettings": {},
+        "wsSettings": {
+          "path": "/drg5ererZ",
+          "headers": {
+            "Host": "krrea.kkzam.xyz"
+          }
+        }
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "port": 31127,
+      "settings": {
+        "clients": [
+          {
+			"id": "CLIENT_ID",
+			"alterId": CLIENT_ALTERID,
+			"security": "CLIENT_SECURITY"
+          }
+        ]
+      },
+      "protocol": "vmess"
+    }
+  ]
 }
